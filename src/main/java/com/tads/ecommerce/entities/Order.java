@@ -1,4 +1,4 @@
-package com.tads.ecommerce.model.entities;
+package com.tads.ecommerce.entities;
 
 import jakarta.persistence.*;
 

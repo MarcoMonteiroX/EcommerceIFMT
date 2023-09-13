@@ -1,7 +1,6 @@
-package com.tads.ecommerce.model.entities;
+package com.tads.ecommerce.entities;
 
 import jakarta.persistence.*;
-
 import java.util.HashSet;
 import java.util.Set;
 
