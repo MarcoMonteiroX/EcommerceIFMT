@@ -1,6 +1,7 @@
 package com.tads.ecommerce.services;
 
 import com.tads.ecommerce.dtos.ProductDTO;
+import com.tads.ecommerce.entities.Product;
 import com.tads.ecommerce.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,13 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Page<ProductDTO> findAll(Pageable pageable) {
         return repository.findAll(pageable).map(x -> new ProductDTO(x));
+    }
+
+    @Transactional
+    public ProductDTO insert(ProductDTO productDTO) {
+        Product product = new Product(productDTO.getName(), productDTO.getDescription(), productDTO.getPrice(), productDTO.getImgUrl());
+        product = repository.save(product);
+        return new ProductDTO(product);
     }
 
 }
