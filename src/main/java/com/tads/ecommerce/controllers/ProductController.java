@@ -23,6 +23,19 @@ public class ProductController {
         return ResponseEntity.ok(dto);
     }
 
+    /*
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        try {
+            ProductDTO dto = service.findById(id);
+            return ResponseEntity.ok(dto);
+        } catch (ResourceNotFoundException e) {
+            CustomError err = new CustomError(Instant.now(), 404, e.getMessage(), "caminho");
+            return ResponseEntity.status(404).body(err);
+        }
+    }
+     */
+
     @GetMapping
     public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable) {
         Page<ProductDTO> dto = service.findAll(pageable);
