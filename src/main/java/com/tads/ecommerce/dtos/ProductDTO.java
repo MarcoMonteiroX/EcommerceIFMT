@@ -7,12 +7,22 @@ import jakarta.validation.constraints.Size;
 
 public class ProductDTO {
     private Long id;
+<<<<<<< HEAD
     @Size(min = 3, max = 80, message = "Nome entre 3 e 80 caracteres.")
     private String name;
     @Size(min = 10, message = "Descrição precisa ter no minimo 8 caracteres.")
     @NotBlank(message = "Campo requerido")
     private String description;
     @Positive(message = "O preço deve ser positivo.")
+=======
+    @Size(min = 3, max = 80, message = "Nome precisa ter entre 3 e 80 caracteres")
+    @NotBlank(message = "Campo requerido")
+    private String name;
+    @Size (min = 10, message = "Descrição precisa ter no mínimo 10 caracteres")
+    @NotBlank(message = "Campo requerido")
+    private String description;
+    @Positive(message = "O preço deve ser positivo")
+>>>>>>> 65bf0ec0ed77aeaaf02608d8860d0630916a21d0
     private Double price;
     private String imgUrl;
 
