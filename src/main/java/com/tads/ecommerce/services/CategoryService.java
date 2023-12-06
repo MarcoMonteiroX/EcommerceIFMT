@@ -1,8 +1,8 @@
 package com.tads.ecommerce.services;
 
-import com.tads.ecommerce.dtos.ProductDTO;
-import com.tads.ecommerce.entities.Product;
-import com.tads.ecommerce.repositories.ProductRepository;
+import com.tads.ecommerce.dtos.CategoryDTO;
+import com.tads.ecommerce.entities.Category;
+import com.tads.ecommerce.repositories.CategoryRepository;
 import com.tads.ecommerce.services.exceptions.DatabaseException;
 import com.tads.ecommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,36 +16,37 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ProductService {
+public class CategoryService {
 
     @Autowired
-    private ProductRepository repository;
+    private CategoryRepository repository;
 
-    @Transactional(readOnly = true)
-    public ProductDTO findById(Long id) {
-        return new ProductDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado.")));
+    public CategoryDTO findById(Long id) {
+        return new CategoryDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado")));
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(Pageable pageable) {
-        return repository.findAll(pageable).map(x -> new ProductDTO(x));
+    public Page<CategoryDTO> findAll(Pageable pageable) {
+        Page<Category> categories = repository.findAll(pageable);
+        return categories.map(CategoryDTO::new);
     }
 
     @Transactional
-    public ProductDTO insert(ProductDTO productDTO) {
-        Product product = new Product(productDTO.getName(), productDTO.getDescription(), productDTO.getPrice(), productDTO.getImgUrl());
-        product = repository.save(product);
-        return new ProductDTO(product);
+    public CategoryDTO insert(CategoryDTO dto) {
+        Category entity = new Category();
+        entity.setName(dto.getName());
+        entity = repository.save(entity);
+        return new CategoryDTO(entity);
     }
 
     @Transactional
-    public ProductDTO update(Long id, ProductDTO dto) {
+    public CategoryDTO update(Long id, CategoryDTO dto) {
         try {
-            Product entity = repository.getReferenceById(id);
+            Category entity = repository.getReferenceById(id);
             copyDtoToEntity(dto, entity);
-            return new ProductDTO(entity);
+            return new CategoryDTO(entity);
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("Recurso nao encontrado");
+            throw new ResourceNotFoundException("Recurso não encontrado");
         }
     }
 
@@ -60,11 +61,8 @@ public class ProductService {
         }
     }
 
-    private void copyDtoToEntity(ProductDTO dto, Product entity) {
+    private void copyDtoToEntity(CategoryDTO dto, Category entity) {
         entity.setName(dto.getName());
-        entity.setDescription(dto.getDescription());
-        entity.setPrice(dto.getPrice());
-        entity.setImgUrl(dto.getImgUrl());
     }
 
 }

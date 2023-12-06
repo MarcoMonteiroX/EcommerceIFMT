@@ -1,4 +1,4 @@
-package com.tads.ecommerce.dtos;
+package com.tads.ecommerce.dtos.exceptions;
 
 import java.time.Instant;
 import java.util.ArrayList;

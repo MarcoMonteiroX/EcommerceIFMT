@@ -1,7 +1,7 @@
 package com.tads.ecommerce.controllers.handlers;
 
 
-import com.tads.ecommerce.dtos.CustomError;
+import com.tads.ecommerce.dtos.exceptions.CustomError;
 import com.tads.ecommerce.services.exceptions.DatabaseException;
 import com.tads.ecommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;

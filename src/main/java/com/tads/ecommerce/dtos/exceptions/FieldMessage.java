@@ -1,4 +1,4 @@
-package com.tads.ecommerce.dtos;
+package com.tads.ecommerce.dtos.exceptions;
 
 public class FieldMessage {
     private String name;

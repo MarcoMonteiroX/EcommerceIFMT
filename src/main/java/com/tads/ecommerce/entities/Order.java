@@ -1,5 +1,6 @@
 package com.tads.ecommerce.entities;
 
+import com.tads.ecommerce.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.time.Instant;

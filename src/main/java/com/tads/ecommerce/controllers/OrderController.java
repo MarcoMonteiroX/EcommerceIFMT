@@ -1,10 +1,11 @@
 package com.tads.ecommerce.controllers;
 
+import com.tads.ecommerce.dtos.OrderDTO;
 import com.tads.ecommerce.dtos.exceptions.CustomError;
-import com.tads.ecommerce.dtos.ProductDTO;
 import com.tads.ecommerce.dtos.exceptions.ValidationError;
-import com.tads.ecommerce.services.ProductService;
+import com.tads.ecommerce.services.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,32 +20,31 @@ import java.net.URI;
 import java.time.Instant;
 
 @RestController
-@RequestMapping(value = "/products")
-public class ProductController {
+@RequestMapping(value = "/orders")
+public class OrderController {
+
     @Autowired
-    private ProductService service;
+    private OrderService service;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
-        ProductDTO dto = service.findById(id);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<OrderDTO> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable) {
-        Page<ProductDTO> dto = service.findAll(pageable);
-        return ResponseEntity.ok(dto);
+    public Page<OrderDTO> findAll(Pageable pageable) {
+        return service.findAll(pageable);
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
+    public ResponseEntity<OrderDTO> insert(@Valid @RequestBody OrderDTO dto) {
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
+    public ResponseEntity<OrderDTO> update(@PathVariable Long id, @Valid @RequestBody OrderDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok(dto);
     }
