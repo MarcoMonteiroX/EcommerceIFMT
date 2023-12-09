@@ -23,6 +23,13 @@ public class OrderDTO {
         this.client = client;
     }
 
+    public OrderDTO(Long id, Instant moment, OrderStatus status, Long client) {
+        this.id = id;
+        this.moment = moment;
+        this.status = status;
+        this.client = client;
+    }
+
     public OrderDTO(Order order) {
         this.id = order.getId();
         this.moment = order.getMoment();

@@ -4,12 +4,14 @@ import com.tads.ecommerce.dtos.OrderDTO;
 import com.tads.ecommerce.entities.Order;
 import com.tads.ecommerce.entities.Payment;
 import com.tads.ecommerce.entities.User;
+import com.tads.ecommerce.entities.enums.OrderStatus;
 import com.tads.ecommerce.repositories.OrderRepository;
 import com.tads.ecommerce.repositories.PaymentRepository;
 import com.tads.ecommerce.repositories.UserRepository;
 import com.tads.ecommerce.services.exceptions.DatabaseException;
 import com.tads.ecommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -30,13 +32,14 @@ public class OrderService {
     private UserRepository userRepository;
 
     public OrderDTO findById(Long id) {
-        return new OrderDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado")));
+        Order order = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
+        return toDto(order);
     }
 
     @Transactional(readOnly = true)
     public Page<OrderDTO> findAll(Pageable pageable) {
         Page<Order> orders = repository.findAll(pageable);
-        return orders.map(OrderDTO::new);
+        return orders.map(this::toDto);
     }
 
     @Transactional
@@ -82,5 +85,20 @@ public class OrderService {
         entity.setStatus(dto.getStatus());
         entity.setPayment(payment);
         entity.setClient(user);
+    }
+
+    private OrderDTO toDto(Order order) {
+        OrderDTO orderDTO;
+        if(order.getStatus() == OrderStatus.WAITING_PAYMENT) {
+            orderDTO = new OrderDTO(
+              order.getId(),
+              order.getMoment(),
+              order.getStatus(),
+              order.getClient().getId()
+            );
+        } else {
+            orderDTO = new OrderDTO(order);
+        }
+        return orderDTO;
     }
 }
